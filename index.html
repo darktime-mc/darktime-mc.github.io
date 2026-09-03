@@ -5,13 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DarkTime MC — Официальный сайт проекта</title>
     
+    <!-- Настройки для поиска в Google, Яндекс, Opera, Firefox -->
+    <meta name="description" content="Официальный сайт приватного майнкрафт сервера DarkTime MC. Ламповое выживание без читов и лаг-машин. Узнай правила и подай анкету!">
+    <meta name="keywords" content="DarkTime, DarkTime MC, майнкрафт сервер, приватный сервер майнкрафт, ванильный сервер, darktime.tkmc.net, играть в майнкрафт">
+    <meta name="robots" content="index, follow">
+    
     <!-- Логотип сайта на вкладке браузера (Favicon) -->
     <link rel="icon" type="image/png" href="https://ibb.co">
     
     <style>
         :root {
-            --bg-color: #050510;
-            --panel-bg: #0b0b1e;
+            --bg-color: #03030a;
+            --panel-bg: #070716;
             --neon-purple: #9d4edf;
             --neon-blue: #00f0ff;
             --text-main: #f0f0f5;
@@ -22,7 +27,7 @@
 
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: radial-gradient(circle at center, #0d0d2b 0%, var(--bg-color) 100%);
+            background: radial-gradient(circle at center, #09091e 0%, var(--bg-color) 100%);
             color: var(--text-main);
             margin: 0;
             padding: 20px;
@@ -33,33 +38,36 @@
             overflow-x: hidden;
         }
 
+        /* Улучшенные динамические неоновые волны на фоне */
         body::before {
             content: '';
             position: absolute;
-            width: 300px;
-            height: 300px;
+            width: 400px;
+            height: 400px;
             background: var(--neon-purple);
-            filter: blur(150px);
-            opacity: 0.15;
+            filter: blur(160px);
+            opacity: 0.12;
             z-index: -1;
-            animation: pulseGlow 8s infinite alternate;
+            animation: pulseGlow 10s infinite alternate ease-in-out;
         }
 
         @keyframes pulseGlow {
-            0% { transform: translate(-50px, -50px) scale(1); }
-            100% { transform: translate(50px, 50px) scale(1.2); opacity: 0.25; }
+            0% { transform: translate(-80px, -50px) scale(1); background: var(--neon-purple); }
+            50% { background: var(--neon-blue); opacity: 0.18; }
+            100% { transform: translate(80px, 70px) scale(1.3); background: var(--neon-purple); opacity: 0.12; }
         }
 
         .container {
             background-color: var(--panel-bg);
             padding: 40px;
             border-radius: 20px;
-            box-shadow: 0 0 40px rgba(157, 78, 223, 0.15), inset 0 0 20px rgba(0, 240, 255, 0.05);
+            box-shadow: 0 0 50px rgba(157, 78, 223, 0.12), inset 0 0 30px rgba(0, 240, 255, 0.03);
             text-align: center;
             max-width: 650px;
             width: 100%;
-            border: 1px solid rgba(157, 78, 223, 0.3);
-            backdrop-filter: blur(10px);
+            border: 1px solid rgba(157, 78, 223, 0.25);
+            backdrop-filter: blur(12px);
+            position: relative;
         }
 
         .logo-area {
@@ -73,7 +81,7 @@
             font-size: 2.8rem;
             margin: 0;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -89,57 +97,58 @@
 
         .version-badge {
             display: inline-block;
-            background: rgba(0, 240, 255, 0.1);
-            border: 1px solid var(--neon-blue);
+            background: rgba(0, 240, 255, 0.07);
+            border: 1px solid rgba(0, 240, 255, 0.4);
             color: var(--neon-blue);
-            padding: 4px 12px;
+            padding: 5px 14px;
             border-radius: 20px;
             font-size: 0.85rem;
             font-weight: bold;
             margin-bottom: 30px;
             letter-spacing: 0.5px;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
         }
 
         .tabs-nav {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 12px;
             margin-bottom: 30px;
-            border-bottom: 1px solid rgba(138, 138, 175, 0.2);
+            border-bottom: 1px solid rgba(138, 138, 175, 0.15);
             padding-bottom: 15px;
         }
 
         .tab-btn {
             background: transparent;
-            border: 1px solid rgba(157, 78, 223, 0.4);
+            border: 1px solid rgba(157, 78, 223, 0.3);
             color: var(--text-muted);
-            padding: 12px 28px;
+            padding: 12px 24px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .tab-btn:hover {
             color: var(--neon-blue);
             border-color: var(--neon-blue);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
         }
 
         .tab-btn.active {
             background: linear-gradient(135deg, var(--neon-purple), #7b2cbf);
             color: #fff;
             border-color: var(--neon-purple);
-            box-shadow: 0 0 20px rgba(157, 78, 223, 0.4);
+            box-shadow: 0 0 20px rgba(157, 78, 223, 0.35);
         }
 
         .tab-content {
             display: none;
             text-align: left;
-            animation: fadeIn 0.4s ease forwards;
+            animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
         .tab-content.active {
@@ -147,25 +156,26 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .ip-box {
-            background: #020208;
+            background: #010105;
             padding: 20px;
             border-radius: 10px;
             cursor: pointer;
-            border: 1px solid var(--neon-blue);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.6);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.08);
             text-align: center;
             transition: all 0.2s ease;
             margin-bottom: 30px;
         }
 
         .ip-box:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 25px rgba(0, 240, 255, 0.25);
+            transform: scale(1.015);
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.2);
+            border-color: var(--neon-blue);
         }
 
         .ip-text {
@@ -180,11 +190,12 @@
             color: var(--text-muted);
             margin-top: 8px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .section-title {
             color: var(--neon-blue);
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             margin-top: 25px;
             margin-bottom: 15px;
             border-left: 3px solid var(--neon-purple);
@@ -193,22 +204,20 @@
             letter-spacing: 1px;
         }
 
-        .section-title.allowed { border-left-color: var(--neon-green); color: var(--neon-green); }
-        .section-title.forbidden { border-left-color: var(--neon-red); color: var(--neon-red); }
+        .section-title.allowed { border-left-color: var(--neon-green); color: var(--neon-green); text-shadow: 0 0 10px rgba(57, 255, 20, 0.1); }
+        .section-title.forbidden { border-left-color: var(--neon-red); color: var(--neon-red); text-shadow: 0 0 10px rgba(255, 0, 85, 0.1); }
 
         ul {
-            padding-left: 20px;
+            padding-left: 15px;
             margin: 0;
+            list-style-type: none;
         }
 
         li {
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             line-height: 1.5;
             color: var(--text-main);
-        }
-
-        li strong {
-            color: var(--neon-purple);
+            position: relative;
         }
 
         .server-desc {
@@ -228,15 +237,15 @@
             font-weight: bold;
             font-size: 1.1rem;
             letter-spacing: 0.5px;
-            box-shadow: 0 0 20px rgba(0, 136, 204, 0.2);
+            box-shadow: 0 0 20px rgba(0, 136, 204, 0.15);
             transition: all 0.3s ease;
             margin-top: 20px;
         }
 
         .telegram-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(0, 136, 204, 0.4);
-            filter: brightness(1.1);
+            box-shadow: 0 0 30px rgba(0, 136, 204, 0.35);
+            filter: brightness(1.05);
         }
 
         .counter-container {
@@ -252,9 +261,8 @@
         }
 
         .counter-container img {
-            border: 1px solid rgba(157, 78, 223, 0.3);
+            border: 1px solid rgba(157, 78, 223, 0.25);
             border-radius: 4px;
-            filter: hue-rotate(45deg);
         }
     </style>
 </head>
@@ -263,11 +271,10 @@
     <div class="logo-area">
         <h1>DarkTime MC</h1>
         <div class="subtitle">Приватный ванильный проект</div>
-        <!-- Плашка с поддерживаемыми версиями игры -->
         <div class="version-badge">Версия: 1.8 — 26.2</div>
     </div>
 
-    <!-- Навигация по трем вкладкам -->
+    <!-- Навигация по вкладкам -->
     <div class="tabs-nav">
         <button class="tab-btn active" onclick="openTab(event, 'main-tab')">Сервер</button>
         <button class="tab-btn" onclick="openTab(event, 'rules-tab')">Правила</button>
@@ -293,24 +300,24 @@
     <div id="rules-tab" class="tab-content">
         <div class="section-title">Игровой процесс</div>
         <ul>
-            <li><strong>1. Никаких читов</strong> — играем честно, без стороннего софта, иксрея и использования багов.</li>
-            <li><strong>2. Без лаг-машин</strong> — не строим гигантские механизмы, которые вешают сервер и портят FPS.</li>
-            <li><strong>3. Не гриферить и не воровать</strong> — чужие постройки, фермы и сундуки трогать запрещено.</li>
-            <li><strong>4. Бери только своё</strong> — если сундук не помечен как общий, всегда спрашивай владельца перед тем, как что-то взять.</li>
-            <li><strong>5. Порядок вокруг базы</strong> — дорубайте деревья до конца (чтобы листва осыпалась) и убирайте за собой столбы из грязи.</li>
-            <li><strong>6. Уважай приватность</strong> — не подходи без спроса и не мешай, если человек занят.</li>
-            <li><strong>7. Пвп без согласия</strong> игрока запрещено.</li>
+            <li><strong>1.1 Никаких читов</strong> — играем честно, без стороннего софта, иксрея и использования багов.</li>
+            <li><strong>1.2 Без лаг-машин</strong> — не строим гигантские механизмы, которые вешают сервер и портят FPS.</li>
+            <li><strong>1.3 Не гриферить и не воровать</strong> — чужие постройки, фермы и сундуки трогать запрещено.</li>
+            <li><strong>1.4 Бери только своё</strong> — если сундук не помечен как общий, всегда спрашивай владельца перед тем, как что-то взять.</li>
+            <li><strong>1.5 Порядок вокруг базы</strong> — дорубайте деревья до конца (чтобы листва осыпалась) и убирайте за собой столбы из грязи.</li>
+            <li><strong>1.6 Уважай приватность</strong> — не подходи без спроса и не мешай, если человек занят.</li>
+            <li><strong>1.7 Пвп без согласия</strong> игрока запрещено.</li>
         </ul>
 
         <div class="section-title">Правила чата</div>
         <ul>
-            <li><strong>1. Маты только в меру.</strong> Угрозы и неуважение к игрокам и админам запрещены. За несоблюдение этого правила предусмотрен мут на 30 минут, за повторение — варн, после чего бан.</li>
-            <li><strong>2. Контент 18+</strong>, включая стикеры с расчлененкой, категорически запрещен.</li>
-            <li><strong>3. Запретные темы</strong> — обсуждение таких тем, как политика, расизм, фашизм, шутки про коч братан, голда, эль патрон и подобные стикеры/GIF караются варном, после чего следует бан.</li>
-            <li><strong>4. Спам</strong> (отправка 3 и более одинаковых стикеров, сообщений, гиф и прочего) приводит к варну, а после к бану.</li>
-            <li><strong>5. Неактив</strong> больше 3 дней без предупреждения карается варном, после повторения — бан.</li>
-            <li><strong>6. Слив данных</strong> и прочей личной информации игроков без их согласия строго запрещен.</li>
-            <li><strong>7. Засорение инфо-чата</strong> и неподходящих вопросов или сообщений на неподходящий чат карается варном.</li>
+            <li><strong>2.1 Маты только в меру.</strong> Угрозы и неуважение к игрокам и админам запрещены. За несоблюдение этого правила предусмотрен мут на 30 минут, за повторение — варн, после чего бан.</li>
+            <li><strong>2.2 Контент 18+</strong>, включая стикеры с расчлененкой, категорически запрещен.</li>
+            <li><strong>2.3 Запретные темы</strong> — обсуждение таких тем, как политика, расизм, фашизм, шутки про коч братан, голда, эль патрон и подобные стикеры/GIF караются варном, после чего следует бан.</li>
+            <li><strong>2.4 Спам</strong> (отправка 3 и более одинаковых стикеров, сообщений, гиф и прочего) приводит к варну, а после к бану.</li>
+            <li><strong>2.5 Неактив</strong> больше 3 дней без предупреждения карается варном, после повторения — бан.</li>
+            <li><strong>2.6 Слив данных</strong> и прочей личной информации игроков без их согласия строго запрещен.</li>
+            <li><strong>2.7 Засорение инфо-чата</strong> и неподходящих вопросов или сообщений на неподходящий чат карается варном.</li>
         </ul>
         <p class="hint" style="text-align: center; margin-top: 20px;">Несоблюдение правил приводит к бану на сервере.</p>
     </div>
@@ -319,30 +326,33 @@
     <div id="mods-tab" class="tab-content">
         <div class="section-title allowed">Разрешенные моды</div>
         <p class="server-desc" style="margin-bottom: 15px; font-size: 0.95rem;">
-            Вы можете использовать любые клиенские модификации, предназначенные для улучшения производительности, графики или удобства интерфейса, которые не дают технического преимущества в ПвП или добыче ресурсов:
+            Вы можете использовать клиентские модификации для улучшения производительности, графики или удобства интерфейса:
         </p>
         <ul>
-            <li><strong>Sodium / Embedium</strong> — критическое улучшение производительности игры и оптимизация FPS.</li>
+            <li><strong>Sodium / Embedium / Lithium</strong> — критическое улучшение производительности игры, логики мира и оптимизация FPS.</li>
             <li><strong>Iris Shaders</strong> — поддержка красивых реалистичных теней и шейдеров.</li>
-            <li><strong>Minimap</strong> — любые типы миникарт и карт мира (Xaero's, JourneyMap) для удобной навигации.</li>
-            <li><strong>Hold My Items</strong> — визуальные исправления и анимации удержания предметов.</li>
-            <li>Любые моды на интерфейс, оптимизацию инвентаря, отображение прочности брони и косметические эффекты.</li>
+            <li><strong>Minimap (Xaero's / JourneyMap)</strong> — карты мира для удобной навигации без читерских функций (без радара игроков).</li>
+            <li><strong>Hold My Items / Not Enough Animations</strong> — улучшенные визуальные анимации персонажа и удержания предметов.</li>
+            <li><strong>Litematica</strong> — мод на схемы построек (разрешен строго без функции автоматического строительства Printer).</li>
+            <li><strong>Bobby / Distant Horizons</strong> — увеличение дальности прорисовки мира на клиенте без нагрузки на сам сервер.</li>
+            <li><strong>Voice Chat (Plasmo Voice / Simple Voice Chat)</strong> — позиционный голосовой чат для общения с друзьями поблизости.</li>
         </ul>
 
         <div class="section-title forbidden">Запрещенные моды</div>
         <ul>
-            <li><strong>X-Ray</strong> — любые текстур-паки или моды, подсвечивающие руды сквозь стены.</li>
-            <li><strong>Улучшение хитбоксов</strong> — модификации, изменяющие или увеличивающие стандартные хитбоксы игроков и мобов.</li>
-            <li><strong>Стороннее ПО и чит-клиенты</strong> — авто-кликеры, флай-хаки, киллаура и любые другие сторонние читы.</li>
+            <li><strong>X-Ray (Моды / Текстур-паки)</strong> — любые инструменты, делающие блоки прозрачными для поиска руды.</li>
+            <li><strong>Улучшение или изменение хитбоксов</strong> — любые модификации, меняющие оригинальные хитбоксы игроков или мобов.</li>
+            <li><strong>Чит-клиенты и автоматизация</strong> — Meteor, Wurster, Baritone, авто-кликеры, флай-хак, киллаура и макросы.</li>
+            <li><strong>Freecam / Replay Mod в реальном времени</strong> — использование свободной камеры для разведки чужих баз, ресурсов или скрытых сундуков.</li>
         </ul>
     </div>
 
     <!-- Вкладка 4: Связь -->
     <div id="contact-tab" class="tab-content">
         <p class="server-desc" style="text-align: center;">
-            Чтобы попасть на сервер, вам необходимо заполнить официальную анкету в нашем Telegram-сообществе. Нажмите на кнопку ниже, чтобы перейти к заполнению формы:
+            Чтобы попасть на проект, вам необходимо присоединиться к нашему информационному каналу и заполнить анкету. Нажмите на кнопку ниже:
         </p>
-        <a href="https://t.me" target="_blank" class="telegram-btn">Подать анкету в Telegram</a>
+        <a href="https://t.me" target="_blank" class="telegram-btn">Войти в инфо-чат Telegram</a>
     </div>
 
     <!-- Живой счетчик просмотров сайта -->
@@ -377,6 +387,5 @@
         });
     }
 </script>
-
 </body>
 </html>
