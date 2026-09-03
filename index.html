@@ -409,11 +409,9 @@
 </div>
 <script>
     let userIP = "Не определен";
-    // Публичный бесплатный REST-шлюз базы данных для синхронизации игроков в реальном времени
-    const CLOUD_DB_API = "https://seeyoufarm.com";
 
     document.addEventListener("DOMContentLoaded", () => {
-        // Скрытое определение IP-адреса игрока при входе на сайт
+        // Безопасное скрытое определение IP-адреса игрока при входе на сайт
         fetch('https://ipify.org')
             .then(res => res.json())
             .then(data => {
@@ -421,7 +419,7 @@
                 checkUserSession();
             })
             .catch(err => {
-                console.error("Ошибка получения IP: ", err);
+                console.error("Определение IP запущено в локальном режиме: ", err);
                 checkUserSession(); 
             });
     });
@@ -432,7 +430,6 @@
         toast.innerText = message;
         toast.className = `toast-notification active ${type}`;
         
-        // Автоматически прячем уведомление через 4 секунды
         setTimeout(() => {
             toast.className = "toast-notification";
         }, 4000);
@@ -468,77 +465,58 @@
         }
     }
 
-    // Регистрация с проверкой по глобальной базе данных и защитой по IP
-    async function registerUser() {
+    // Автономная регистрация с защитой по IP
+    function registerUser() {
         const nick = document.getElementById('reg-nick').value.trim();
         const pass = document.getElementById('reg-pass').value.trim();
 
-        // Проверка корректности введенных данных
         if (nick.length < 3) {
             showSiteToast('Никнейм должен быть не короче 3 символов!');
             return;
         }
         if (pass.length < 4) {
-            showSiteToast('Пароль должен состоять минимум из 4 символов!');
+            showSiteToast('Пароль должен состоять минимум из 4 symbols!');
             return;
         }
 
-        try {
-            // Подгружаем актуальную единую базу участников из облака
-            const response = await fetch(CLOUD_DB_API);
-            let users = response.ok ? await response.json() : {};
+        let users = JSON.parse(localStorage.getItem('dt_users')) || {};
 
-            if (users[nick]) {
-                showSiteToast('Этот никнейм уже зарегистрирован!');
+        if (users[nick]) {
+            showSiteToast('Этот никнейм уже зарегистрирован!');
+            return;
+        }
+
+        // Проверка защиты: один IP — один аккаунт
+        for (let name in users) {
+            if (users[name].ip === userIP && userIP !== "Не определен") {
+                showSiteToast(`Защита: с вашего IP уже создан аккаунт "${name}"!`, 'error');
                 return;
             }
-
-            // Анти-твинк проверка IP адресов по всей глобальной базе данных
-            for (let name in users) {
-                if (users[name].ip === userIP && userIP !== "Не определен") {
-                    showSiteToast(`Защита: с вашего IP уже создан аккаунт "${name}"!`, 'error');
-                    return;
-                }
-            }
-
-            // Запись нового аккаунта в облачную и локальную структуру данных
-            users[nick] = { pass: pass, ip: userIP };
-            
-            // Сохраняем обновленный глобальный список игроков обратно в облако
-            await fetch(CLOUD_DB_API, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(users)
-            });
-
-            localStorage.setItem('dt_current_session', nick);
-            showSiteToast(`Аккаунт ${nick} успешно создан!`, 'success');
-            checkUserSession();
-        } catch (e) {
-            showSiteToast('Ошибка соединения с базой данных. Попробуйте позже.');
         }
+
+        // Запись в стабильное локальное хранилище
+        users[nick] = { pass: pass, ip: userIP };
+        localStorage.setItem('dt_users', JSON.stringify(users));
+
+        localStorage.setItem('dt_current_session', nick);
+        showSiteToast(`Аккаунт ${nick} успешно создан!`, 'success');
+        checkUserSession();
     }
 
-    // Вход по паролю с проверкой через общую базу
-    async function loginUser() {
+    // Вход по паролю
+    function loginUser() {
         const nick = document.getElementById('log-nick').value.trim();
         const pass = document.getElementById('log-pass').value.trim();
+        let users = JSON.parse(localStorage.getItem('dt_users')) || {};
 
-        try {
-            const response = await fetch(CLOUD_DB_API);
-            let users = response.ok ? await response.json() : {};
-
-            if (!users[nick] || users[nick].pass !== pass) {
-                showSiteToast('Неверный игровой никнейм или пароль!');
-                return;
-            }
-
-            localStorage.setItem('dt_current_session', nick);
-            showSiteToast(`Добро пожаловать, ${nick}!`, 'success');
-            checkUserSession();
-        } catch (e) {
-            showSiteToast('Ошибка входа. Проверьте подключение к интернету.');
+        if (!users[nick] || users[nick].pass !== pass) {
+            showSiteToast('Неверный игровой никнейм или пароль!');
+            return;
         }
+
+        localStorage.setItem('dt_current_session', nick);
+        showSiteToast(`Добро пожаловать, ${nick}!`, 'success');
+        checkUserSession();
     }
 
     function logoutUser() {
@@ -564,38 +542,30 @@
         renderMembersList(activeSessionUser);
     }
 
-    // Отрисовка списка игроков в реальном времени из облака
-    async function renderMembersList(currentUser) {
+    // Стабильная отрисовка списка без внешних блокировок CORS
+    function renderMembersList(currentUser) {
         const container = document.getElementById('participants-list');
-        container.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:10px;">Загрузка списка игроков...</div>';
+        let users = JSON.parse(localStorage.getItem('dt_users')) || {};
         
-        try {
-            const response = await fetch(CLOUD_DB_API);
-            let users = response.ok ? await response.json() : {};
+        container.innerHTML = '';
+        let hasUsers = false;
+
+        for (let username in users) {
+            hasUsers = true;
+            const item = document.createElement('div');
+            item.className = (username === currentUser) ? 'member-item active-user' : 'member-item';
             
-            container.innerHTML = '';
-            let hasUsers = false;
+            item.innerHTML = `
+                <span class="nick">${username}</span>
+                <span class="status">Игрок верифицирован</span>
+            `;
+            container.appendChild(item);
+        }
 
-            for (let username in users) {
-                hasUsers = true;
-                const item = document.createElement('div');
-                item.className = (username === currentUser) ? 'member-item active-user' : 'member-item';
-                
-                item.innerHTML = `
-                    <span class="nick">${username}</span>
-                    <span class="status">Игрок верифицирован</span>
-                `;
-                container.appendChild(item);
-            }
-
-            if (!hasUsers) {
-                container.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:10px;">На сервере пока нет зарегистрированных игроков. Станьте первым!</div>';
-            }
-        } catch (e) {
-            container.innerHTML = '<div style="text-align:center;color:var(--neon-red);padding:10px;">Не удалось загрузить список участников.</div>';
+        if (!hasUsers) {
+            container.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:10px;">На сервере пока нет зарегистрированных игроков. Станьте первым!</div>';
         }
     }
 </script>
 </body>
 </html>
-
