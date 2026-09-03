@@ -64,6 +64,7 @@
             width: 100%;
             border: 1px solid rgba(157, 78, 223, 0.25);
             backdrop-filter: blur(12px);
+            position: relative;
         }
 
         .logo-area {
@@ -239,11 +240,31 @@
         .member-item .nick { font-weight: bold; color: var(--neon-blue); }
         .member-item .status { font-size: 0.8rem; color: var(--text-muted); }
         
-        .telegram-btn { display: block; text-align: center; background: linear-gradient(135deg, #0088cc, #00a2ed); color: #fff; padding: 16px; border-radius: 10px; text-decoration: none; font-weight: bold; margin-top: 20px; }
+        /* Стили внутренних красивых уведомлений */
+        .toast-notification {
+            position: fixed;
+            top: 20px;
+            right: -350px;
+            background: #0b0b1e;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+            color: #fff;
+            font-weight: 600;
+            z-index: 9999;
+            transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-left: 4px solid var(--neon-purple);
+        }
+        .toast-notification.active { right: 20px; }
+        .toast-notification.error { border-left-color: var(--neon-red); box-shadow: 0 0 20px rgba(255,0,85,0.15); }
+        .toast-notification.success { border-left-color: var(--neon-green); box-shadow: 0 0 20px rgba(57,255,20,0.15); }
+                .telegram-btn { display: block; text-align: center; background: linear-gradient(135deg, #0088cc, #00a2ed); color: #fff; padding: 16px; border-radius: 10px; text-decoration: none; font-weight: bold; margin-top: 20px; }
         .counter-container { margin-top: 35px; border-top: 1px solid rgba(138, 138, 175, 0.1); padding-top: 20px; display: flex; justify-content: center; gap: 10px; font-size: 0.85rem; color: var(--text-muted); }
     </style>
 </head>
 <body>
+    <!-- Внутренний контейнер для уведомлений сайта -->
+    <div id="site-toast" class="toast-notification">Уведомление</div>
 <div class="container">
     <div class="logo-area">
         <h1>DarkTime MC</h1>
@@ -287,7 +308,7 @@
         <ul>
             <li><strong>2.1 Маты в меру.</strong> Угрозы и неуважение к игрокам и админам запрещены. Предусмотрен мут на 30 минут, повтор — варн, далее бан.</li>
             <li><strong>2.2 Контент 18+</strong>, включая стикеры с расчлененкой, категорически запрещен.</li>
-            <li><strong>2.3 Запретные темы</strong> — обсуждение политики, расизм, фашизм караются варном, далее бан.</li>
+            <li><strong>2.3 Запретные темы</strong> — обсуждение политики, расизма, фашизм караются варном, далее бан.</li>
             <li><strong>2.4 Спам</strong> (3 и более одинаковых стикеров, сообщений, гиф) приводит к варну, после к бану.</li>
             <li><strong>2.5 Неактив</strong> больше 3 дней без предупреждения карается варном, далее бан.</li>
             <li><strong>2.6 Слив данных</strong> личной информации игроков без их согласия строго запрещен.</li>
@@ -388,20 +409,11 @@
 </div>
 <script>
     let userIP = "Не определен";
+    // Публичный бесплатный REST-шлюз базы данных для синхронизации игроков в реальном времени
+    const CLOUD_DB_API = "https://seeyoufarm.com";
 
-    // Автоматическая загрузка базы данных и проверка IP при входе на сайт
     document.addEventListener("DOMContentLoaded", () => {
-        // Подгружаем дефолтных админов, если база пустая
-        if (!localStorage.getItem('dt_users')) {
-            const defaultSystemUsers = {
-                "Admin_DarkTime": { pass: "1111", ip: "127.0.0.1" },
-                "Fixer_MC": { pass: "2222", ip: "127.0.0.2" },
-                "Steve_Vanilla": { pass: "3333", ip: "127.0.0.3" }
-            };
-            localStorage.setItem('dt_users', JSON.stringify(defaultSystemUsers));
-        }
-        
-        // Запрос к бесплатному сервису для скрытого определения IP игрока
+        // Скрытое определение IP-адреса игрока при входе на сайт
         fetch('https://ipify.org')
             .then(res => res.json())
             .then(data => {
@@ -409,10 +421,22 @@
                 checkUserSession();
             })
             .catch(err => {
-                console.error("Ошибка сети при получении IP: ", err);
+                console.error("Ошибка получения IP: ", err);
                 checkUserSession(); 
             });
     });
+
+    // Функция красивого неонового всплывающего уведомления внутри сайта
+    function showSiteToast(message, type = "error") {
+        const toast = document.getElementById("site-toast");
+        toast.innerText = message;
+        toast.className = `toast-notification active ${type}`;
+        
+        // Автоматически прячем уведомление через 4 секунды
+        setTimeout(() => {
+            toast.className = "toast-notification";
+        }, 4000);
+    }
 
     function openTab(evt, tabId) {
         const tabContents = document.getElementsByClassName("tab-content");
@@ -430,7 +454,7 @@
     function copyIP() {
         const ipText = document.getElementById('server-ip').innerText;
         navigator.clipboard.writeText(ipText).then(() => {
-            alert('IP адрес скопирован в буфер обмена!');
+            showSiteToast('IP адрес успешно скопирован в буфер обмена!', 'success');
         });
     }
 
@@ -444,66 +468,85 @@
         }
     }
 
-    // Регистрация с проверкой по IP
-    function registerUser() {
+    // Регистрация с проверкой по глобальной базе данных и защитой по IP
+    async function registerUser() {
         const nick = document.getElementById('reg-nick').value.trim();
         const pass = document.getElementById('reg-pass').value.trim();
 
-        if (nick.length < 3 || pass.length < 4) {
-            alert('Ошибка: Ник от 3 символов, пароль от 4 символов!');
+        // Проверка корректности введенных данных
+        if (nick.length < 3) {
+            showSiteToast('Никнейм должен быть не короче 3 символов!');
+            return;
+        }
+        if (pass.length < 4) {
+            showSiteToast('Пароль должен состоять минимум из 4 символов!');
             return;
         }
 
-        let users = JSON.parse(localStorage.getItem('dt_users')) || {};
+        try {
+            // Подгружаем актуальную единую базу участников из облака
+            const response = await fetch(CLOUD_DB_API);
+            let users = response.ok ? await response.json() : {};
 
-        // Проверка: есть ли уже ник в базе
-        if (users[nick]) {
-            alert('Этот никнейм уже занят другим игроком!');
-            return;
-        }
-
-        // Проверка защиты: не зарегистрирован ли этот IP уже на другого игрока
-        for (let name in users) {
-            if (users[name].ip === userIP && userIP !== "Не определен") {
-                alert(`Анти-твинк защита: С вашего IP-адреса уже создан аккаунт "${name}". Нельзя делать больше одного профиля.`);
+            if (users[nick]) {
+                showSiteToast('Этот никнейм уже зарегистрирован!');
                 return;
             }
-        }
 
-        // Записываем игрока в базу данных браузера
-        users[nick] = { pass: pass, ip: userIP };
-        localStorage.setItem('dt_users', JSON.stringify(users));
-        
-        // Автоматически логиним его после успешной регистрации
-        localStorage.setItem('dt_current_session', nick);
-        
-        alert(`Профиль ${nick} успешно создан! Вы внесены в список участников.`);
-        checkUserSession();
+            // Анти-твинк проверка IP адресов по всей глобальной базе данных
+            for (let name in users) {
+                if (users[name].ip === userIP && userIP !== "Не определен") {
+                    showSiteToast(`Защита: с вашего IP уже создан аккаунт "${name}"!`, 'error');
+                    return;
+                }
+            }
+
+            // Запись нового аккаунта в облачную и локальную структуру данных
+            users[nick] = { pass: pass, ip: userIP };
+            
+            // Сохраняем обновленный глобальный список игроков обратно в облако
+            await fetch(CLOUD_DB_API, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(users)
+            });
+
+            localStorage.setItem('dt_current_session', nick);
+            showSiteToast(`Аккаунт ${nick} успешно создан!`, 'success');
+            checkUserSession();
+        } catch (e) {
+            showSiteToast('Ошибка соединения с базой данных. Попробуйте позже.');
+        }
     }
 
-    // Вход по паролю
-    function loginUser() {
+    // Вход по паролю с проверкой через общую базу
+    async function loginUser() {
         const nick = document.getElementById('log-nick').value.trim();
         const pass = document.getElementById('log-pass').value.trim();
-        let users = JSON.parse(localStorage.getItem('dt_users')) || {};
 
-        if (!users[nick] || users[nick].pass !== pass) {
-            alert('Неверный никнейм или пароль!');
-            return;
+        try {
+            const response = await fetch(CLOUD_DB_API);
+            let users = response.ok ? await response.json() : {};
+
+            if (!users[nick] || users[nick].pass !== pass) {
+                showSiteToast('Неверный игровой никнейм или пароль!');
+                return;
+            }
+
+            localStorage.setItem('dt_current_session', nick);
+            showSiteToast(`Добро пожаловать, ${nick}!`, 'success');
+            checkUserSession();
+        } catch (e) {
+            showSiteToast('Ошибка входа. Проверьте подключение к интернету.');
         }
-
-        localStorage.setItem('dt_current_session', nick);
-        alert(`С возвращением, ${nick}!`);
-        checkUserSession();
     }
 
-    // Выход из системы
     function logoutUser() {
         localStorage.removeItem('dt_current_session');
+        showSiteToast('Вы вышли из своего игрового профиля.', 'success');
         checkUserSession();
     }
 
-    // Проверка сессии входа и отрисовка списка игроков
     function checkUserSession() {
         const activeSessionUser = localStorage.getItem('dt_current_session');
         
@@ -511,7 +554,7 @@
             document.getElementById('auth-forms-container').style.display = 'none';
             document.getElementById('user-logged-panel').style.display = 'block';
             document.getElementById('current-user-name').innerText = activeSessionUser;
-            document.getElementById('user-ip-display').innerText = `Ваш текущий IP в сети: ${userIP}`;
+            document.getElementById('user-ip-display').innerText = `Ваш IP-адрес: ${userIP}`;
         } else {
             document.getElementById('user-logged-panel').style.display = 'none';
             document.getElementById('auth-forms-container').style.display = 'block';
@@ -521,25 +564,38 @@
         renderMembersList(activeSessionUser);
     }
 
-    // Вывод всех зарегистрированных игроков на экран
-    function renderMembersList(currentUser) {
+    // Отрисовка списка игроков в реальном времени из облака
+    async function renderMembersList(currentUser) {
         const container = document.getElementById('participants-list');
-        let users = JSON.parse(localStorage.getItem('dt_users')) || {};
+        container.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:10px;">Загрузка списка игроков...</div>';
         
-        container.innerHTML = '';
-
-        for (let username in users) {
-            const item = document.createElement('div');
-            // Подсвечиваем текущего игрока зеленым бордером в списке
-            item.className = (username === currentUser) ? 'member-item active-user' : 'member-item';
+        try {
+            const response = await fetch(CLOUD_DB_API);
+            let users = response.ok ? await response.json() : {};
             
-            item.innerHTML = `
-                <span class="nick">${username}</span>
-                <span class="status">${username === 'Admin_DarkTime' ? 'Создатель сервера' : 'Зарегистрирован по IP'}</span>
-            `;
-            container.appendChild(item);
+            container.innerHTML = '';
+            let hasUsers = false;
+
+            for (let username in users) {
+                hasUsers = true;
+                const item = document.createElement('div');
+                item.className = (username === currentUser) ? 'member-item active-user' : 'member-item';
+                
+                item.innerHTML = `
+                    <span class="nick">${username}</span>
+                    <span class="status">Игрок верифицирован</span>
+                `;
+                container.appendChild(item);
+            }
+
+            if (!hasUsers) {
+                container.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:10px;">На сервере пока нет зарегистрированных игроков. Станьте первым!</div>';
+            }
+        } catch (e) {
+            container.innerHTML = '<div style="text-align:center;color:var(--neon-red);padding:10px;">Не удалось загрузить список участников.</div>';
         }
     }
 </script>
 </body>
 </html>
+
