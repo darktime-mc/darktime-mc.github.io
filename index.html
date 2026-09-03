@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DarkTime MC — Официальный сайт проекта</title>
+    
+    <!-- Логотип сайта на вкладке браузера (Favicon) -->
+    <link rel="icon" type="image/png" href="https://ibb.co">
+    
     <style>
         :root {
             --bg-color: #050510;
@@ -12,6 +16,8 @@
             --neon-blue: #00f0ff;
             --text-main: #f0f0f5;
             --text-muted: #8a8aaf;
+            --neon-red: #ff0055;
+            --neon-green: #39ff14;
         }
 
         body {
@@ -56,9 +62,16 @@
             backdrop-filter: blur(10px);
         }
 
+        .logo-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
         h1 {
             font-size: 2.8rem;
-            margin-bottom: 5px;
+            margin: 0;
             text-transform: uppercase;
             letter-spacing: 2px;
             background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
@@ -70,8 +83,21 @@
         .subtitle {
             color: var(--text-muted);
             font-size: 1rem;
-            margin-bottom: 35px;
+            margin-bottom: 20px;
             letter-spacing: 1px;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            letter-spacing: 0.5px;
         }
 
         .tabs-nav {
@@ -167,6 +193,9 @@
             letter-spacing: 1px;
         }
 
+        .section-title.allowed { border-left-color: var(--neon-green); color: var(--neon-green); }
+        .section-title.forbidden { border-left-color: var(--neon-red); color: var(--neon-red); }
+
         ul {
             padding-left: 20px;
             margin: 0;
@@ -188,31 +217,62 @@
             font-size: 1.05rem;
         }
 
-        .donate-link {
+        .telegram-btn {
             display: block;
             text-align: center;
-            margin-top: 35px;
-            color: var(--text-muted);
+            background: linear-gradient(135deg, #0088cc, #00a2ed);
+            color: #fff;
+            padding: 16px;
+            border-radius: 10px;
             text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.2s;
+            font-weight: bold;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 20px rgba(0, 136, 204, 0.2);
+            transition: all 0.3s ease;
+            margin-top: 20px;
         }
 
-        .donate-link:hover {
-            color: var(--neon-purple);
-            text-decoration: underline;
+        .telegram-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(0, 136, 204, 0.4);
+            filter: brightness(1.1);
+        }
+
+        .counter-container {
+            margin-top: 35px;
+            border-top: 1px solid rgba(138, 138, 175, 0.1);
+            padding-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .counter-container img {
+            border: 1px solid rgba(157, 78, 223, 0.3);
+            border-radius: 4px;
+            filter: hue-rotate(45deg);
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>DarkTime MC</h1>
-    <div class="subtitle">Приватный ванильный проект</div>
+    <div class="logo-area">
+        <h1>DarkTime MC</h1>
+        <div class="subtitle">Приватный ванильный проект</div>
+        <!-- Плашка с поддерживаемыми версиями игры -->
+        <div class="version-badge">Версия: 1.8 — 26.2</div>
+    </div>
 
-    <!-- Навигация по вкладкам -->
+    <!-- Навигация по трем вкладкам -->
     <div class="tabs-nav">
         <button class="tab-btn active" onclick="openTab(event, 'main-tab')">Сервер</button>
         <button class="tab-btn" onclick="openTab(event, 'rules-tab')">Правила</button>
+        <button class="tab-btn" onclick="openTab(event, 'mods-tab')">Модификации</button>
+        <button class="tab-btn" onclick="openTab(event, 'contact-tab')">Связь</button>
     </div>
 
     <!-- Вкладка 1: Главная -->
@@ -227,7 +287,6 @@
         <p class="server-desc">
             Мы ценим уютную атмосферу, адекватное общение и совместные проекты. Присоединяйтесь, стройте свои города и развивайтесь вместе с нами.
         </p>
-        <a href="https://donationalerts.com" target="_blank" class="donate-link">Поддержать развитие проекта и хостинг</a>
     </div>
 
     <!-- Вкладка 2: Правила -->
@@ -254,6 +313,42 @@
             <li><strong>7. Засорение инфо-чата</strong> и неподходящих вопросов или сообщений на неподходящий чат карается варном.</li>
         </ul>
         <p class="hint" style="text-align: center; margin-top: 20px;">Несоблюдение правил приводит к бану на сервере.</p>
+    </div>
+
+    <!-- Вкладка 3: Модификации -->
+    <div id="mods-tab" class="tab-content">
+        <div class="section-title allowed">Разрешенные моды</div>
+        <p class="server-desc" style="margin-bottom: 15px; font-size: 0.95rem;">
+            Вы можете использовать любые клиенские модификации, предназначенные для улучшения производительности, графики или удобства интерфейса, которые не дают технического преимущества в ПвП или добыче ресурсов:
+        </p>
+        <ul>
+            <li><strong>Sodium / Embedium</strong> — критическое улучшение производительности игры и оптимизация FPS.</li>
+            <li><strong>Iris Shaders</strong> — поддержка красивых реалистичных теней и шейдеров.</li>
+            <li><strong>Minimap</strong> — любые типы миникарт и карт мира (Xaero's, JourneyMap) для удобной навигации.</li>
+            <li><strong>Hold My Items</strong> — визуальные исправления и анимации удержания предметов.</li>
+            <li>Любые моды на интерфейс, оптимизацию инвентаря, отображение прочности брони и косметические эффекты.</li>
+        </ul>
+
+        <div class="section-title forbidden">Запрещенные моды</div>
+        <ul>
+            <li><strong>X-Ray</strong> — любые текстур-паки или моды, подсвечивающие руды сквозь стены.</li>
+            <li><strong>Улучшение хитбоксов</strong> — модификации, изменяющие или увеличивающие стандартные хитбоксы игроков и мобов.</li>
+            <li><strong>Стороннее ПО и чит-клиенты</strong> — авто-кликеры, флай-хаки, киллаура и любые другие сторонние читы.</li>
+        </ul>
+    </div>
+
+    <!-- Вкладка 4: Связь -->
+    <div id="contact-tab" class="tab-content">
+        <p class="server-desc" style="text-align: center;">
+            Чтобы попасть на сервер, вам необходимо заполнить официальную анкету в нашем Telegram-сообществе. Нажмите на кнопку ниже, чтобы перейти к заполнению формы:
+        </p>
+        <a href="https://t.me" target="_blank" class="telegram-btn">Подать анкету в Telegram</a>
+    </div>
+
+    <!-- Живой счетчик просмотров сайта -->
+    <div class="counter-container">
+        <span>Просмотров сайта:</span>
+        <img src="https://seeyoufarm.com" alt="Счетчик"/>
     </div>
 </div>
 
