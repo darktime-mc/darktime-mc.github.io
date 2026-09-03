@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DarkTime MC — Официальный сайт проекта</title>
     
-    <!-- Настройки для поиска в Google, Яндекс, Opera, Firefox -->
-    <meta name="description" content="Официальный сайт приватного майнкрафт сервера DarkTime MC. Ламповое выживание без читов и лаг-машин. Узнай правила и подай анкету!">
-    <meta name="keywords" content="DarkTime, DarkTime MC, майнкрафт сервер, приватный сервер майнкрафт, ванильный сервер, darktime.tkmc.net, играть в майнкрафт">
+    <meta name="description" content="Официальный сайт приватного майнкрафт сервера DarkTime MC. Авторизуйся, создай свой профиль по IP и стань частью команды!">
+    <meta name="keywords" content="DarkTime, DarkTime MC, майнкрафт сервер, приватный сервер майнкрафт, ванильный сервер">
     <meta name="robots" content="index, follow">
     
-    <!-- Логотип сайта на вкладке браузера (Favicon) -->
     <link rel="icon" type="image/png" href="https://ibb.co">
     
     <style>
@@ -38,7 +36,6 @@
             overflow-x: hidden;
         }
 
-        /* Улучшенные динамические неоновые волны на фоне */
         body::before {
             content: '';
             position: absolute;
@@ -67,7 +64,6 @@
             width: 100%;
             border: 1px solid rgba(157, 78, 223, 0.25);
             backdrop-filter: blur(12px);
-            position: relative;
         }
 
         .logo-area {
@@ -106,33 +102,33 @@
             font-weight: bold;
             margin-bottom: 30px;
             letter-spacing: 0.5px;
-            text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
         }
 
         .tabs-nav {
             display: flex;
             justify-content: center;
-            gap: 12px;
+            gap: 8px;
             margin-bottom: 30px;
             border-bottom: 1px solid rgba(138, 138, 175, 0.15);
             padding-bottom: 15px;
+            flex-wrap: wrap;
         }
 
         .tab-btn {
             background: transparent;
             border: 1px solid rgba(157, 78, 223, 0.3);
             color: var(--text-muted);
-            padding: 12px 24px;
+            padding: 10px 20px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
         }
 
-        .tab-btn:hover {
+        .tab-btn:hover, .tab-btn.active {
             color: var(--neon-blue);
             border-color: var(--neon-blue);
             box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
@@ -148,7 +144,7 @@
         .tab-content {
             display: none;
             text-align: left;
-            animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            animation: fadeIn 0.4s ease forwards;
         }
 
         .tab-content.active {
@@ -166,32 +162,14 @@
             border-radius: 10px;
             cursor: pointer;
             border: 1px solid rgba(0, 240, 255, 0.6);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.08);
             text-align: center;
             transition: all 0.2s ease;
             margin-bottom: 30px;
         }
 
-        .ip-box:hover {
-            transform: scale(1.015);
-            box-shadow: 0 0 25px rgba(0, 240, 255, 0.2);
-            border-color: var(--neon-blue);
-        }
-
-        .ip-text {
-            font-size: 24px;
-            font-weight: bold;
-            color: #fff;
-            letter-spacing: 1px;
-        }
-
-        .hint {
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-top: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+        .ip-box:hover { transform: scale(1.015); box-shadow: 0 0 25px rgba(0, 240, 255, 0.2); }
+        .ip-text { font-size: 24px; font-weight: bold; color: #fff; }
+        .hint { font-size: 11px; color: var(--text-muted); margin-top: 8px; text-transform: uppercase; }
 
         .section-title {
             color: var(--neon-blue);
@@ -201,69 +179,68 @@
             border-left: 3px solid var(--neon-purple);
             padding-left: 10px;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
+        .section-title.allowed { border-left-color: var(--neon-green); color: var(--neon-green); }
+        .section-title.forbidden { border-left-color: var(--neon-red); color: var(--neon-red); }
 
-        .section-title.allowed { border-left-color: var(--neon-green); color: var(--neon-green); text-shadow: 0 0 10px rgba(57, 255, 20, 0.1); }
-        .section-title.forbidden { border-left-color: var(--neon-red); color: var(--neon-red); text-shadow: 0 0 10px rgba(255, 0, 85, 0.1); }
+        ul { padding-left: 15px; margin: 0; list-style-type: none; }
+        li { margin-bottom: 14px; line-height: 1.5; color: var(--text-main); }
+        li strong { color: var(--neon-purple); }
+        .server-desc { line-height: 1.6; color: var(--text-main); font-size: 1.05rem; }
 
-        ul {
-            padding-left: 15px;
-            margin: 0;
-            list-style-type: none;
+        .auth-box {
+            background: #020208;
+            border: 1px solid rgba(157, 78, 223, 0.3);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
         }
-
-        li {
-            margin-bottom: 14px;
-            line-height: 1.5;
-            color: var(--text-main);
-            position: relative;
-        }
-
-        .server-desc {
-            line-height: 1.6;
-            color: var(--text-main);
-            font-size: 1.05rem;
-        }
-
-        .telegram-btn {
-            display: block;
+        .auth-toggle-links {
+            margin-top: 15px;
             text-align: center;
-            background: linear-gradient(135deg, #0088cc, #00a2ed);
-            color: #fff;
-            padding: 16px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.1rem;
-            letter-spacing: 0.5px;
-            box-shadow: 0 0 20px rgba(0, 136, 204, 0.15);
-            transition: all 0.3s ease;
-            margin-top: 20px;
-        }
-
-        .telegram-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(0, 136, 204, 0.35);
-            filter: brightness(1.05);
-        }
-
-        .counter-container {
-            margin-top: 35px;
-            border-top: 1px solid rgba(138, 138, 175, 0.1);
-            padding-top: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: var(--text-muted);
         }
-
-        .counter-container img {
-            border: 1px solid rgba(157, 78, 223, 0.25);
-            border-radius: 4px;
+        .auth-toggle-links span {
+            color: var(--neon-blue);
+            cursor: pointer;
+            text-decoration: underline;
+            margin-left: 5px;
         }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; }
+        .form-control {
+            width: 100%; padding: 12px; background: #04040f; border: 1px solid rgba(138, 138, 175, 0.3);
+            border-radius: 8px; color: #fff; font-size: 1rem; box-sizing: border-box;
+        }
+        .form-control:focus { outline: none; border-color: var(--neon-blue); box-shadow: 0 0 10px rgba(0, 240, 255, 0.1); }
+        
+        .form-btn {
+            background: linear-gradient(135deg, var(--neon-purple), #7b2cbf); color: white; border: none;
+            padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; text-transform: uppercase; width: 100%;
+        }
+        .form-btn.logout { background: linear-gradient(135deg, var(--neon-red), #b7003b); margin-top: 15px; }
+        
+        .user-panel {
+            background: rgba(57, 255, 20, 0.05); border: 1px solid var(--neon-green);
+            padding: 20px; border-radius: 12px; text-align: center; margin-bottom: 25px;
+        }
+        .user-panel h2 { color: var(--neon-green); margin: 0 0 10px 0; font-size: 1.4rem; }
+
+        .member-list {
+            background: #010105; border: 1px solid rgba(138, 138, 175, 0.15);
+            border-radius: 10px; padding: 15px; max-height: 250px; overflow-y: auto; margin-top: 15px;
+        }
+        .member-item {
+            padding: 10px 12px; border-bottom: 1px solid rgba(138, 138, 175, 0.08);
+            color: var(--text-main); display: flex; justify-content: space-between; align-items: center;
+        }
+        .member-item.active-user { border-left: 3px solid var(--neon-green); background: rgba(57, 255, 20, 0.02); }
+        .member-item .nick { font-weight: bold; color: var(--neon-blue); }
+        .member-item .status { font-size: 0.8rem; color: var(--text-muted); }
+        
+        .telegram-btn { display: block; text-align: center; background: linear-gradient(135deg, #0088cc, #00a2ed); color: #fff; padding: 16px; border-radius: 10px; text-decoration: none; font-weight: bold; margin-top: 20px; }
+        .counter-container { margin-top: 35px; border-top: 1px solid rgba(138, 138, 175, 0.1); padding-top: 20px; display: flex; justify-content: center; gap: 10px; font-size: 0.85rem; color: var(--text-muted); }
     </style>
 </head>
 <body>
@@ -274,11 +251,11 @@
         <div class="version-badge">Версия: 1.8 — 26.2</div>
     </div>
 
-    <!-- Навигация по вкладкам -->
     <div class="tabs-nav">
         <button class="tab-btn active" onclick="openTab(event, 'main-tab')">Сервер</button>
         <button class="tab-btn" onclick="openTab(event, 'rules-tab')">Правила</button>
         <button class="tab-btn" onclick="openTab(event, 'mods-tab')">Модификации</button>
+        <button class="tab-btn" onclick="openTab(event, 'register-tab')">Профиль</button>
         <button class="tab-btn" onclick="openTab(event, 'contact-tab')">Связь</button>
     </div>
 
@@ -289,10 +266,7 @@
             <div class="hint">Кликните, чтобы скопировать адрес для подключения</div>
         </div>
         <p class="server-desc">
-            Добро пожаловать на DarkTime MC. Это тщательно проработанный приватный сервер, созданный для ценителей классического выживания в кругу друзей. Здесь нет перегружающих игру плагинов, навязчивой рекламы или дисбалансного доната. Только чистая ванила, сильное сообщество и полная свобода для творчества.
-        </p>
-        <p class="server-desc">
-            Мы ценим уютную атмосферу, адекватное общение и совместные проекты. Присоединяйтесь, стройте свои города и развивайтесь вместе с нами.
+            Добро пожаловать на DarkTime MC. Это тщательно проработанный приватный сервер, созданный для ценителей классического выживания в кругу друзей. Здесь нет плагинов, навязчивой рекламы или дисбалансного доната. Только чистая ванила, сильное сообщество и полная свобода для творчества.
         </p>
     </div>
 
@@ -303,56 +277,107 @@
             <li><strong>1.1 Никаких читов</strong> — играем честно, без стороннего софта, иксрея и использования багов.</li>
             <li><strong>1.2 Без лаг-машин</strong> — не строим гигантские механизмы, которые вешают сервер и портят FPS.</li>
             <li><strong>1.3 Не гриферить и не воровать</strong> — чужие постройки, фермы и сундуки трогать запрещено.</li>
-            <li><strong>1.4 Бери только своё</strong> — если сундук не помечен как общий, всегда спрашивай владельца перед тем, как что-то взять.</li>
-            <li><strong>1.5 Порядок вокруг базы</strong> — дорубайте деревья до конца (чтобы листва осыпалась) и убирайте за собой столбы из грязи.</li>
+            <li><strong>1.4 Бери только своё</strong> — если сундук не помечен как общий, спрашивай владельца.</li>
+            <li><strong>1.5 Порядок вокруг базы</strong> — дорубайте деревья до конца и убирайте за собой столбы.</li>
             <li><strong>1.6 Уважай приватность</strong> — не подходи без спроса и не мешай, если человек занят.</li>
             <li><strong>1.7 Пвп без согласия</strong> игрока запрещено.</li>
         </ul>
 
         <div class="section-title">Правила чата</div>
         <ul>
-            <li><strong>2.1 Маты только в меру.</strong> Угрозы и неуважение к игрокам и админам запрещены. За несоблюдение этого правила предусмотрен мут на 30 минут, за повторение — варн, после чего бан.</li>
+            <li><strong>2.1 Маты в меру.</strong> Угрозы и неуважение к игрокам и админам запрещены. Предусмотрен мут на 30 минут, повтор — варн, далее бан.</li>
             <li><strong>2.2 Контент 18+</strong>, включая стикеры с расчлененкой, категорически запрещен.</li>
-            <li><strong>2.3 Запретные темы</strong> — обсуждение таких тем, как политика, расизм, фашизм, шутки про коч братан, голда, эль патрон и подобные стикеры/GIF караются варном, после чего следует бан.</li>
-            <li><strong>2.4 Спам</strong> (отправка 3 и более одинаковых стикеров, сообщений, гиф и прочего) приводит к варну, а после к бану.</li>
-            <li><strong>2.5 Неактив</strong> больше 3 дней без предупреждения карается варном, после повторения — бан.</li>
-            <li><strong>2.6 Слив данных</strong> и прочей личной информации игроков без их согласия строго запрещен.</li>
-            <li><strong>2.7 Засорение инфо-чата</strong> и неподходящих вопросов или сообщений на неподходящий чат карается варном.</li>
+            <li><strong>2.3 Запретные темы</strong> — обсуждение политики, расизм, фашизм караются варном, далее бан.</li>
+            <li><strong>2.4 Спам</strong> (3 и более одинаковых стикеров, сообщений, гиф) приводит к варну, после к бану.</li>
+            <li><strong>2.5 Неактив</strong> больше 3 дней без предупреждения карается варном, далее бан.</li>
+            <li><strong>2.6 Слив данных</strong> личной информации игроков без их согласия строго запрещен.</li>
+            <li><strong>2.7 Засорение инфо-чата</strong> неподходящими сообщениями карается варном.</li>
         </ul>
-        <p class="hint" style="text-align: center; margin-top: 20px;">Несоблюдение правил приводит к бану на сервере.</p>
     </div>
 
     <!-- Вкладка 3: Модификации -->
     <div id="mods-tab" class="tab-content">
         <div class="section-title allowed">Разрешенные моды</div>
-        <p class="server-desc" style="margin-bottom: 15px; font-size: 0.95rem;">
-            Вы можете использовать клиентские модификации для улучшения производительности, графики или удобства интерфейса:
-        </p>
         <ul>
-            <li><strong>Sodium / Embedium / Lithium</strong> — критическое улучшение производительности игры, логики мира и оптимизация FPS.</li>
+            <li><strong>Sodium / Embedium / Lithium</strong> — улучшение производительности игры и оптимизация FPS.</li>
             <li><strong>Iris Shaders</strong> — поддержка красивых реалистичных теней и шейдеров.</li>
-            <li><strong>Minimap (Xaero's / JourneyMap)</strong> — карты мира для удобной навигации без читерских функций (без радара игроков).</li>
-            <li><strong>Hold My Items / Not Enough Animations</strong> — улучшенные визуальные анимации персонажа и удержания предметов.</li>
-            <li><strong>Litematica</strong> — мод на схемы построек (разрешен строго без функции автоматического строительства Printer).</li>
-            <li><strong>Bobby / Distant Horizons</strong> — увеличение дальности прорисовки мира на клиенте без нагрузки на сам сервер.</li>
-            <li><strong>Voice Chat (Plasmo Voice / Simple Voice Chat)</strong> — позиционный голосовой чат для общения с друзьями поблизости.</li>
+            <li><strong>Minimap (Xaero's / JourneyMap)</strong> — карты мира для удобной навигации без радара игроков.</li>
+            <li><strong>Hold My Items / Not Enough Animations</strong> — улучшенные анимации персонажа.</li>
+            <li><strong>Litematica</strong> — мод на схемы построек (разрешен строго без функции Printer).</li>
+            <li><strong>Bobby / Distant Horizons</strong> — увеличение дальности прорисовки мира на клиенте.</li>
+            <li><strong>Voice Chat (Plasmo Voice)</strong> — позиционный голосовой чат для общения.</li>
         </ul>
 
         <div class="section-title forbidden">Запрещенные моды</div>
         <ul>
-            <li><strong>X-Ray (Моды / Текстур-паки)</strong> — любые инструменты, делающие блоки прозрачными для поиска руды.</li>
-            <li><strong>Улучшение или изменение хитбоксов</strong> — любые модификации, меняющие оригинальные хитбоксы игроков или мобов.</li>
-            <li><strong>Чит-клиенты и автоматизация</strong> — Meteor, Wurster, Baritone, авто-кликеры, флай-хак, киллаура и макросы.</li>
-            <li><strong>Freecam / Replay Mod в реальном времени</strong> — использование свободной камеры для разведки чужих баз, ресурсов или скрытых сундуков.</li>
+            <li><strong>X-Ray (Моды / Текстур-паки)</strong> — любые инструменты для поиска руды сквозь стены.</li>
+            <li><strong>Улучшение хитбоксов</strong> — любые модификации, меняющие хитбоксы игроков или мобов.</li>
+            <li><strong>Чит-клиенты</strong> — Meteor, Wurster, Baritone, авто-кликеры, флай-хак и киллаура.</li>
+            <li><strong>Freecam / Replay Mod</strong> — свободная камера для разведки чужих баз или ресурсов в реальном времени.</li>
         </ul>
     </div>
+    <!-- Вкладка 4: Профиль и список участников -->
+    <div id="register-tab" class="tab-content">
+        <!-- Панель авторизованного пользователя -->
+        <div id="user-logged-panel" class="user-panel" style="display: none;">
+            <h2>Успешный вход</h2>
+            <p class="server-desc" style="text-align: center; margin-bottom: 5px;">
+                Вы вошли как: <span id="current-user-name" style="color: var(--neon-blue); font-weight: bold;"></span>
+            </p>
+            <p class="hint" style="margin-top: 0; margin-bottom: 15px;" id="user-ip-display"></p>
+            <button class="form-btn logout" onclick="logoutUser()">Выйти из аккаунта</button>
+        </div>
 
-    <!-- Вкладка 4: Связь -->
+        <!-- Окна авторизации -->
+        <div id="auth-forms-container">
+            <!-- Форма регистрации -->
+            <div id="register-form-box" class="auth-box">
+                <div class="section-title" style="margin-top: 0;">Регистрация профиля</div>
+                <div class="form-group">
+                    <label>Игровой никнейм в Майнкрафте</label>
+                    <input type="text" id="reg-nick" class="form-control" placeholder="Имя игрока">
+                </div>
+                <div class="form-group">
+                    <label>Придумайте пароль</label>
+                    <input type="password" id="reg-pass" class="form-control" placeholder="Минимум 4 символа">
+                </div>
+                <button class="form-btn" onclick="registerUser()">Создать аккаунт</button>
+                <div class="auth-toggle-links">
+                    Уже есть профиль? <span onclick="toggleAuthForm('login')">Войти</span>
+                </div>
+            </div>
+
+            <!-- Форма логина -->
+            <div id="login-form-box" class="auth-box" style="display: none;">
+                <div class="section-title" style="margin-top: 0;">Вход в аккаунт</div>
+                <div class="form-group">
+                    <label>Игровой никнейм</label>
+                    <input type="text" id="log-nick" class="form-control" placeholder="Имя игрока">
+                </div>
+                <div class="form-group">
+                    <label>Пароль</label>
+                    <input type="password" id="log-pass" class="form-control" placeholder="Введите ваш пароль">
+                </div>
+                <button class="form-btn" onclick="loginUser()">Авторизоваться</button>
+                <div class="auth-toggle-links">
+                    Еще нет профиля? <span onclick="toggleAuthForm('register')">Зарегистрироваться</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Раздел со списком игроков -->
+        <div class="section-title">Участники проекта</div>
+        <div class="member-list" id="participants-list">
+            <!-- Игроки выводятся скриптом -->
+        </div>
+    </div>
+
+    <!-- Вкладка 5: Связь -->
     <div id="contact-tab" class="tab-content">
         <p class="server-desc" style="text-align: center;">
             Чтобы попасть на проект, вам необходимо присоединиться к нашему информационному каналу и заполнить анкету. Нажмите на кнопку ниже:
         </p>
-        <a href="https://t.me" target="_blank" class="telegram-btn">Войти в инфо-чат Telegram</a>
+        <a href="https://telegram.me" target="_blank" class="telegram-btn">Войти в инфо-чат Telegram</a>
     </div>
 
     <!-- Живой счетчик просмотров сайта -->
@@ -361,19 +386,43 @@
         <img src="https://seeyoufarm.com" alt="Счетчик"/>
     </div>
 </div>
-
 <script>
+    let userIP = "Не определен";
+
+    // Автоматическая загрузка базы данных и проверка IP при входе на сайт
+    document.addEventListener("DOMContentLoaded", () => {
+        // Подгружаем дефолтных админов, если база пустая
+        if (!localStorage.getItem('dt_users')) {
+            const defaultSystemUsers = {
+                "Admin_DarkTime": { pass: "1111", ip: "127.0.0.1" },
+                "Fixer_MC": { pass: "2222", ip: "127.0.0.2" },
+                "Steve_Vanilla": { pass: "3333", ip: "127.0.0.3" }
+            };
+            localStorage.setItem('dt_users', JSON.stringify(defaultSystemUsers));
+        }
+        
+        // Запрос к бесплатному сервису для скрытого определения IP игрока
+        fetch('https://ipify.org')
+            .then(res => res.json())
+            .then(data => {
+                userIP = data.ip;
+                checkUserSession();
+            })
+            .catch(err => {
+                console.error("Ошибка сети при получении IP: ", err);
+                checkUserSession(); 
+            });
+    });
+
     function openTab(evt, tabId) {
         const tabContents = document.getElementsByClassName("tab-content");
         for (let i = 0; i < tabContents.length; i++) {
             tabContents[i].classList.remove("active");
         }
-
         const tabButtons = document.getElementsByClassName("tab-btn");
         for (let i = 0; i < tabButtons.length; i++) {
             tabButtons[i].classList.remove("active");
         }
-
         document.getElementById(tabId).classList.add("active");
         evt.currentTarget.classList.add("active");
     }
@@ -382,9 +431,114 @@
         const ipText = document.getElementById('server-ip').innerText;
         navigator.clipboard.writeText(ipText).then(() => {
             alert('IP адрес скопирован в буфер обмена!');
-        }).catch(err => {
-            console.error('Ошибка копирования: ', err);
         });
+    }
+
+    function toggleAuthForm(formType) {
+        if (formType === 'login') {
+            document.getElementById('register-form-box').style.display = 'none';
+            document.getElementById('login-form-box').style.display = 'block';
+        } else {
+            document.getElementById('login-form-box').style.display = 'none';
+            document.getElementById('register-form-box').style.display = 'block';
+        }
+    }
+
+    // Регистрация с проверкой по IP
+    function registerUser() {
+        const nick = document.getElementById('reg-nick').value.trim();
+        const pass = document.getElementById('reg-pass').value.trim();
+
+        if (nick.length < 3 || pass.length < 4) {
+            alert('Ошибка: Ник от 3 символов, пароль от 4 символов!');
+            return;
+        }
+
+        let users = JSON.parse(localStorage.getItem('dt_users')) || {};
+
+        // Проверка: есть ли уже ник в базе
+        if (users[nick]) {
+            alert('Этот никнейм уже занят другим игроком!');
+            return;
+        }
+
+        // Проверка защиты: не зарегистрирован ли этот IP уже на другого игрока
+        for (let name in users) {
+            if (users[name].ip === userIP && userIP !== "Не определен") {
+                alert(`Анти-твинк защита: С вашего IP-адреса уже создан аккаунт "${name}". Нельзя делать больше одного профиля.`);
+                return;
+            }
+        }
+
+        // Записываем игрока в базу данных браузера
+        users[nick] = { pass: pass, ip: userIP };
+        localStorage.setItem('dt_users', JSON.stringify(users));
+        
+        // Автоматически логиним его после успешной регистрации
+        localStorage.setItem('dt_current_session', nick);
+        
+        alert(`Профиль ${nick} успешно создан! Вы внесены в список участников.`);
+        checkUserSession();
+    }
+
+    // Вход по паролю
+    function loginUser() {
+        const nick = document.getElementById('log-nick').value.trim();
+        const pass = document.getElementById('log-pass').value.trim();
+        let users = JSON.parse(localStorage.getItem('dt_users')) || {};
+
+        if (!users[nick] || users[nick].pass !== pass) {
+            alert('Неверный никнейм или пароль!');
+            return;
+        }
+
+        localStorage.setItem('dt_current_session', nick);
+        alert(`С возвращением, ${nick}!`);
+        checkUserSession();
+    }
+
+    // Выход из системы
+    function logoutUser() {
+        localStorage.removeItem('dt_current_session');
+        checkUserSession();
+    }
+
+    // Проверка сессии входа и отрисовка списка игроков
+    function checkUserSession() {
+        const activeSessionUser = localStorage.getItem('dt_current_session');
+        
+        if (activeSessionUser) {
+            document.getElementById('auth-forms-container').style.display = 'none';
+            document.getElementById('user-logged-panel').style.display = 'block';
+            document.getElementById('current-user-name').innerText = activeSessionUser;
+            document.getElementById('user-ip-display').innerText = `Ваш текущий IP в сети: ${userIP}`;
+        } else {
+            document.getElementById('user-logged-panel').style.display = 'none';
+            document.getElementById('auth-forms-container').style.display = 'block';
+            toggleAuthForm('register');
+        }
+
+        renderMembersList(activeSessionUser);
+    }
+
+    // Вывод всех зарегистрированных игроков на экран
+    function renderMembersList(currentUser) {
+        const container = document.getElementById('participants-list');
+        let users = JSON.parse(localStorage.getItem('dt_users')) || {};
+        
+        container.innerHTML = '';
+
+        for (let username in users) {
+            const item = document.createElement('div');
+            // Подсвечиваем текущего игрока зеленым бордером в списке
+            item.className = (username === currentUser) ? 'member-item active-user' : 'member-item';
+            
+            item.innerHTML = `
+                <span class="nick">${username}</span>
+                <span class="status">${username === 'Admin_DarkTime' ? 'Создатель сервера' : 'Зарегистрирован по IP'}</span>
+            `;
+            container.appendChild(item);
+        }
     }
 </script>
 </body>
