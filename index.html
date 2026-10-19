@@ -382,26 +382,119 @@
             </div>
         </div>
 
-        <div id="contacts" class="tab-content">
-            <p class="server-desc">
-                <strong>DarkerTime MC</strong> — это полностью закрытый проект. Попасть к нам можно только через систему заявок, чтобы гарантировать безопасность игрового мира от случайных вредителей.
-            </p>
-            <p class="server-desc">
-                Чтобы подать анкету, узнать свежие новости и пообщаться с комьюнити, переходи по кнопке ниже:
-            </p>
-            
-            <a href="tg://resolve?domain=c&post=4396645748_1" onclick="window.open('https://t.me'); return false;" class="telegram-btn" target="_blank">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-                Вступить в Telegram
-            </a>
-        </div>
-
-        <div class="footer-text">
-            <span>&copy; 2026 DarkerTime MC. Все права reserved.</span>
-        </div>
+       <div id="contacts" class="tab-content">
+    <p class="server-desc">
+        <strong>DarkerTime MC</strong> — это полностью закрытый проект. Попасть к нам можно только через систему заявок, чтобы гарантировать безопасность игрового мира от случайных вредителей.
+    </p>
+    <p class="server-desc">
+        Чтобы подать анкету, узнать свежие новости и пообщаться с комьюнити, скопируйте ссылку на наш ресурс ниже:
+    </p>
+    
+    <!-- СТИЛЬНОЕ ОКОШКО ДЛЯ КОПИРОВАНИЯ -->
+    <div class="copy-container">
+        <input type="text" class="copy-input" value="https://t.me/c/4396645748/1" readonly id="tgLink">
+        <button class="copy-btn" onclick="copyLink()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="copy-icon">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span id="btnText">Копировать</span>
+        </button>
     </div>
+</div>
 
-    <script>
+<div class="footer-text">
+    <span>&copy; 2026 DarkerTime MC. Все права защищены.</span>
+</div>
+
+<!-- ДОБАВЬТЕ ЭТИ СТИЛИ В ВАШ CSS-ФАЙЛ ИЛИ В БЛОК <style> -->
+<style>
+    .copy-container {
+        display: flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 6px 6px 6px 14px;
+        max-width: 450px;
+        margin: 15px 0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: border-color 0.3s ease;
+    }
+    
+    .copy-container:hover {
+        border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .copy-input {
+        flex-grow: 1;
+        background: transparent;
+        border: none;
+        color: #e0e0e0;
+        font-family: monospace;
+        font-size: 14px;
+        outline: none;
+        padding-right: 10px;
+        width: 100%;
+    }
+
+    .copy-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: #2481cc; /* Фирменный цвет Telegram */
+        color: #ffffff;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 14px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.1s ease;
+        white-space: nowrap;
+    }
+
+    .copy-btn:hover {
+        background: #2894e6;
+    }
+
+    .copy-btn:active {
+        transform: scale(0.97);
+    }
+    
+    .copy-btn.copied {
+        background: #2ecc71; /* Зеленый цвет при успешном копировании */
+    }
+
+    .server-desc strong {
+        color: #2481cc; /* Выделение названия проекта цветом */
+    }
+</style>
+
+<!-- СКРИПТ ДЛЯ АВТОМАТИЧЕСКОГО КОПИРОВАНИЯ -->
+<script>
+function copyLink() {
+    const copyText = document.getElementById("tgLink");
+    const btnText = document.getElementById("btnText");
+    const btn = document.querySelector(".copy-btn");
+
+    // Копирование в буфер
+    copyText.select();
+    copyText.setSelectionRange(0, 99999); // Для мобильных устройств
+    navigator.clipboard.writeText(copyText.value);
+
+    // Анимация кнопки
+    btnText.innerText = "Скопировано!";
+    btn.classList.add("copied");
+
+    // Возврат исходного состояния через 2 секунды
+    setTimeout(() => {
+        btnText.innerText = "Копировать";
+        btn.classList.remove("copied");
+    }, 2000);
+}
+</script>
+
         function openTab(evt, tabName) {
             var i, tabcontent, tablinks;
             tabcontent = document.getElementsByClassName("tab-content");
